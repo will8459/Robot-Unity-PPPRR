@@ -9,7 +9,7 @@ public class RobotLigneAuto : MonoBehaviour
     public Transform q1_Z; 
     public Transform q2_X; 
     public Transform q3_Y;
-    public Transform q4_RotX;
+    public Transform q5_RotZ;
     public Transform pointe_E; 
 
     [Header("Paramètres UI")]
@@ -37,7 +37,7 @@ public class RobotLigneAuto : MonoBehaviour
         if (q1_Z) startPos1 = q1_Z.localPosition;
         if (q2_X) startPos2 = q2_X.localPosition;
         if (q3_Y) startPos3 = q3_Y.localPosition;
-        if (q4_RotX) startRot4 = q4_RotX.localRotation;
+        if (q5_RotZ) startRot4 = q5_RotZ.localRotation;
 
         // Calcul du point de départ trajectoire
         float rad4 = angleInclinaison * Mathf.Deg2Rad;
@@ -83,7 +83,7 @@ public class RobotLigneAuto : MonoBehaviour
             q1_Z.localPosition = new Vector3(startPos1.x, startPos1.y, q1);
             q2_X.localPosition = new Vector3(q2, startPos2.y, startPos2.z);
             q3_Y.localPosition = new Vector3(startPos3.x, q3, startPos3.z);
-            q4_RotX.localRotation = startRot4 * Quaternion.Euler(angleInclinaison, 0, 0);
+            q5_RotZ.localRotation = startRot4 * Quaternion.Euler(angleInclinaison, 0, 0);
         }
     }
 }
