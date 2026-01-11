@@ -73,4 +73,26 @@ public class RobotManualControl : MonoBehaviour
                                   $"Erreur : {(erreur * 1000f).ToString("F2")} mm";
         }
     }
+
+    public void ResetToOrigin()
+    {
+        // 1. Arrêter le mode automatique s'il est actif
+        RobotAutoControl auto = GetComponent<RobotAutoControl>();
+        if (auto != null) {
+            auto.StopAutomation(); // Cette méthode réactive aussi le script manuel
+        }
+
+        // 2. Remettre tous les sliders à zéro
+        // Cela déclenchera automatiquement le mouvement dans l'Update() suivant
+        if(slider1) slider1.value = 0;
+        if(slider2) slider2.value = 0;
+        if(slider3) slider3.value = 0;
+        if(slider4) slider4.value = 0;
+        if(slider5) slider5.value = 0;
+        // 3. Forcer la mise à jour immédiate pour éviter un saut d'une frame
+        Canvas.ForceUpdateCanvases(); 
+        Debug.Log("Robot réinitialisé à l'état d'origine.");
+    }
+
 }
+
