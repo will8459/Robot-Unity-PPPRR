@@ -14,6 +14,10 @@ public class RobotAutoControl : MonoBehaviour
     private Mode currentMode = Mode.Idle;
     private float timer = 0f;
 
+    [Header("Réglages Tracé")]
+    public TrailRenderer traceur; 
+    public float hauteurEcriture = 1.0f; // Ajustez cette valeur si le stylo ne touche pas le sol
+
     // Résolution du MGI (Modèle Géométrique Inverse)
     // On calcule q1, q2, q3 pour atteindre une position (Px, Py, Pz) désirée
     void SolveMGI(float targetPx, float targetPy, float targetPz, float q4, float q5)
@@ -41,36 +45,40 @@ public class RobotAutoControl : MonoBehaviour
 
     void Update()
     {
-        if (currentMode == Mode.Idle) return;
+        if (currentMode == Mode.Idle) {
+            if (traceur != null) traceur.emitting = false; // Ne trace pas en mode manuel
+            return;
+        }
 
-        timer += Time.deltaTime * 0.5f; // Vitesse de tracé
+        timer += Time.deltaTime * 0.5f;
+        traceur.emitting = true; // Active le tracé dès que l'automatique démarre
 
         if (currentMode == Mode.Line) {
-            // Trajectoire Linéaire : Lerp entre deux points (X, Y, Z)
             float x = Mathf.Lerp(0, 2, timer);
-            float y = 1.0f; // Hauteur constante
             float z = Mathf.Lerp(0, 2, timer);
-            SolveMGI(y, x, z, 0, 0); // Note: Inversion axes selon votre MGD
+            // On utilise hauteurEcriture pour Px (qui est l'axe Y vertical chez vous)
+            SolveMGI(hauteurEcriture, x, z, 0, 0); 
         }
         else if (currentMode == Mode.Circle) {
-            // Trajectoire Circulaire : r*cos(t), r*sin(t)
             float radius = 1.0f;
             float x = radius * Mathf.Cos(timer * 2 * Mathf.PI);
             float z = radius * Mathf.Sin(timer * 2 * Mathf.PI);
-            float y = 1.0f;
-            SolveMGI(y, x, z, 0, 0);
+            SolveMGI(hauteurEcriture, x, z, 0, 0);
         }
 
-        if (timer >= 1f) StopAutomation();
+        // if (timer >= 1f) StopAutomation();
+    }
+
+    public void StopAutomation() { 
+        currentMode = Mode.Idle; 
+        if (traceur != null) traceur.emitting = false;
+        GetComponent<RobotManualControl>().enabled = true; 
+        ToggleManual(true); 
     }
 
     public void StartLine() { timer = 0; currentMode = Mode.Line; ToggleManual(false); }
     public void StartCircle() { timer = 0; currentMode = Mode.Circle; ToggleManual(false); }
     
-    public void StopAutomation() { 
-        currentMode = Mode.Idle; 
-        ToggleManual(true); 
-    }
 
     void ToggleManual(bool state) {
         GetComponent<RobotManualControl>().enabled = state;
