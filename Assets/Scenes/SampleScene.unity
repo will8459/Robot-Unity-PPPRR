@@ -907,7 +907,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1996506854}
+      - m_Target: {fileID: 1706213505}
         m_TargetAssemblyTypeName: RobotAutoControl, Assembly-CSharp
         m_MethodName: StartCircle
         m_Mode: 1
@@ -2061,7 +2061,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1996506855}
+      - m_Target: {fileID: 1706213506}
         m_TargetAssemblyTypeName: RobotManualControl, Assembly-CSharp
         m_MethodName: ResetToOrigin
         m_Mode: 1
@@ -3566,6 +3566,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1706213502}
   - component: {fileID: 1706213504}
+  - component: {fileID: 1706213506}
+  - component: {fileID: 1706213505}
   m_Layer: 2
   m_Name: GameObject_Base
   m_TagString: Untagged
@@ -3609,6 +3611,57 @@ ScaleConstraint:
   m_Sources:
   - sourceTransform: {fileID: 1996506849}
     weight: 1
+--- !u!114 &1706213505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706213501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d41022ef1deae746970892a6ab4d347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  q1_Z: {fileID: 538075455}
+  q2_X: {fileID: 867698837}
+  q3_Y: {fileID: 1354040225}
+  q4_RotX: {fileID: 1205114718}
+  q5_RotZ: {fileID: 1531518492}
+  D1: 0
+  D2: 0
+  D3: 0
+  Lx: 0
+  traceur: {fileID: 1357589909}
+  hauteurEcriture: 1
+--- !u!114 &1706213506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706213501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b11d94c6eedac43a96805e6b1360a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  q1_Z: {fileID: 538075455}
+  q2_X: {fileID: 867698837}
+  q3_Y: {fileID: 1354040225}
+  q4_RotX: {fileID: 1205114718}
+  q5_RotZ: {fileID: 1531518492}
+  pointe_E: {fileID: 1357589908}
+  slider1: {fileID: 320434721}
+  slider2: {fileID: 1634650951}
+  slider3: {fileID: 1706453299}
+  slider4: {fileID: 257104122}
+  slider5: {fileID: 1993806883}
+  D1: 2
+  D2: 0
+  D3: 0
+  A: 0.8
+  affichageTexte: {fileID: 1829360856}
 --- !u!1 &1706453297
 GameObject:
   m_ObjectHideFlags: 0
@@ -3963,7 +4016,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1996506854}
+      - m_Target: {fileID: 1706213505}
         m_TargetAssemblyTypeName: RobotAutoControl, Assembly-CSharp
         m_MethodName: StopAutomation
         m_Mode: 1
@@ -4748,9 +4801,7 @@ GameObject:
   - component: {fileID: 1996506852}
   - component: {fileID: 1996506851}
   - component: {fileID: 1996506850}
-  - component: {fileID: 1996506853}
   - component: {fileID: 1996506855}
-  - component: {fileID: 1996506854}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -4852,41 +4903,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996506848}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1996506853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996506848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b11d94c6eedac43a96805e6b1360a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
---- !u!114 &1996506854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996506848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d41022ef1deae746970892a6ab4d347, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  q1_Z: {fileID: 1456838815}
-  q2_X: {fileID: 559387409}
-  q3_Y: {fileID: 111312982}
-  q4_RotX: {fileID: 32772117}
-  q5_RotZ: {fileID: 1797491423}
-  D1: 0
-  D2: 0
-  D3: 0
-  Lx: 0
-  traceur: {fileID: 1357589909}
-  hauteurEcriture: 1
 --- !u!114 &1996506855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4899,22 +4915,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5d613e9bf3fca439b33e0d8e5b124d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotManualControl
-  q1_Z: {fileID: 1456838815}
-  q2_X: {fileID: 559387409}
-  q3_Y: {fileID: 111312982}
-  q4_RotX: {fileID: 32772117}
-  q5_RotZ: {fileID: 1797491423}
-  pointe_E: {fileID: 1725706687}
-  slider1: {fileID: 320434721}
-  slider2: {fileID: 1634650951}
-  slider3: {fileID: 1706453299}
-  slider4: {fileID: 257104122}
-  slider5: {fileID: 1993806883}
-  D1: 2
+  q1_Z: {fileID: 0}
+  q2_X: {fileID: 0}
+  q3_Y: {fileID: 0}
+  q4_RotX: {fileID: 0}
+  q5_RotZ: {fileID: 0}
+  pointe_E: {fileID: 0}
+  slider1: {fileID: 0}
+  slider2: {fileID: 0}
+  slider3: {fileID: 0}
+  slider4: {fileID: 0}
+  slider5: {fileID: 0}
+  D1: 0
   D2: 0
   D3: 0
-  A: -0.8
-  affichageTexte: {fileID: 1829360856}
+  A: 0
+  affichageTexte: {fileID: 0}
 --- !u!1 &2009667541
 GameObject:
   m_ObjectHideFlags: 0
@@ -5223,7 +5239,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1996506854}
+      - m_Target: {fileID: 1706213505}
         m_TargetAssemblyTypeName: RobotAutoControl, Assembly-CSharp
         m_MethodName: StartLine
         m_Mode: 1

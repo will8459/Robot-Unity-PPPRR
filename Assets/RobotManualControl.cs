@@ -42,8 +42,8 @@ public class RobotManualControl : MonoBehaviour
         q1_Z.localPosition = new Vector3(0, 0, q1);
         q2_X.localPosition = new Vector3(q2, 0, 0);
         q3_Y.localPosition = new Vector3(0, q3, 0);
-        q4_RotX.localEulerAngles = new Vector3(0, q4, 0); // Rotation q4 autour de X
-        q5_RotZ.localEulerAngles = new Vector3(0, q5, 0); // Rotation q5 autour de Z
+        q4_RotX.localEulerAngles = new Vector3(q4, 0, 0); // Rotation q4 autour de X
+        q5_RotZ.localEulerAngles = new Vector3(0, 0, q5); // Rotation q5 autour de Z
 
         // 3. Calcul MGD (Matrice U0)
         float c4 = Mathf.Cos(q4 * Mathf.Deg2Rad);
@@ -53,12 +53,12 @@ public class RobotManualControl : MonoBehaviour
 
         // Équations de la matrice U0 
         float Px = D1 + q3 + (D3 * c4) + (A * s4 * c5); // Correspond à Y Unity
-        float Py = 2*q2 - (A * s5);                       // Correspond à X Unity
+        float Py = q2 - (A * s5);                       // Correspond à X Unity
         float Pz = q1 + D2 - (D3 * s4) + (A * c4 * c5); // Correspond à Z Unity
         
         // 4. Mapping vers les coordonnées Unity (X, Y, Z)
         // Px=Hauteur(Y), Py=Latéral(X), Pz=Profondeur(Z)
-        Vector3 posCalculée = new Vector3(Py + 2, Px, Pz);
+        Vector3 posCalculée = new Vector3(Py, Px, Pz);
 
         // 5. Comparaison avec la position réelle de pointe_E
         // transform.InverseTransformPoint donne la position mondiale relative à la Base
