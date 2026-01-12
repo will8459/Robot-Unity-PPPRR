@@ -8,7 +8,7 @@ public class RobotAutoControl : MonoBehaviour
     public Transform q4_RotX; public Transform q5_RotZ;
 
     [Header("Paramètres DH")]
-    public float D1; public float D2; public float D3; public float Lx;
+    public float D1; public float D2; public float D3; public float A;
 
     private enum Mode { Idle, Line, Circle }
     private Mode currentMode = Mode.Idle;
@@ -26,14 +26,14 @@ public class RobotAutoControl : MonoBehaviour
         float r5 = q5 * Mathf.Deg2Rad;
 
         // Équations dérivées par identification de la matrice U0
-        // q2 = Py + Lx * sin(q5)
-        float q2 = targetPy + (Lx * Mathf.Sin(r5));
+        // q2 = Py + A * sin(q5)
+        float q2 = targetPy + (A * Mathf.Sin(r5));
 
-        // q3 = Px - D1 - D3*cos(q4) - Lx*sin(q4)*cos(q5)
-        float q3 = targetPx - D1 - (D3 * Mathf.Cos(r4)) - (Lx * Mathf.Sin(r4) * Mathf.Cos(r5));
+        // q3 = Px - D1 - D3*cos(q4) - A*sin(q4)*cos(q5)
+        float q3 = targetPx - D1 - (D3 * Mathf.Cos(r4)) - (A * Mathf.Sin(r4) * Mathf.Cos(r5));
 
-        // q1 = Pz - D2 + D3*sin(q4) - Lx*cos(q4)*cos(q5)
-        float q1 = targetPz - D2 + (D3 * Mathf.Sin(r4)) - (Lx * Mathf.Cos(r4) * Mathf.Cos(r5));
+        // q1 = Pz - D2 + D3*sin(q4) - A*cos(q4)*cos(q5)
+        float q1 = targetPz - D2 + (D3 * Mathf.Sin(r4)) - (A * Mathf.Cos(r4) * Mathf.Cos(r5));
 
         // Application aux articulations
         q1_Z.localPosition = new Vector3(0, 0, q1);
