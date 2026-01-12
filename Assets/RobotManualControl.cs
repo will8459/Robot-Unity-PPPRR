@@ -4,95 +4,74 @@ using TMPro;
 
 public class RobotManualControl : MonoBehaviour
 {
-    [Header("Articulations (Pivots)")]
-    public Transform q1_Z;      // Liaison 1 (Prismatique)
-    public Transform q2_X;      // Liaison 2 (Prismatique)
-    public Transform q3_Y;      // Liaison 3 (Prismatique)
-    public Transform q4_RotX;   // Liaison 4 (Rotoïde)
-    public Transform q5_RotZ;   // Liaison 5 (Rotoïde)
-    public Transform pointe_E;  // Effecteur final
+    [Header("Hiérarchie Robot (Empty Objects)")]
+    public Transform origine_0; 
+    public Transform origine_1; // Prismatique 1z
+    public Transform origine_2; // Prismatique 2x
+    public Transform origine_3; // Prismatique 3y
+    public Transform origine_4; // Rotoide 1x (O3=O4)
+    public Transform origine_5; // Rotoide 2z (O5)
+    public Transform pointe_E;  
 
-    [Header("Interface Sliders")]
-    public Slider slider1;
-    public Slider slider2;
-    public Slider slider3;
-    public Slider slider4;
-    public Slider slider5;
+    [Header("Interface UI")]
+    public Slider slider_q1; public Slider slider_q2; public Slider slider_q3;
+    public Slider slider_q4; public Slider slider_q5;
+    public Button btn_reset;
+    public TextMeshProUGUI txt_comparaison;
 
-    [Header("Paramètres DH (Modèle)")]
-    public float D1 = 0f; // Offset base vers liaison 2
-    public float D2 = 0f; // Offset liaison 3 vers 4
-    public float D3 = 0f; // Longueur outil (axe Z)
-    public float A = 0f; // Offset pointe (décalage latéral)
+    [Header("Paramètres DH")]
+    public float D1 = 1f; public float D2 = 0.5f; public float D3 = 0.5f; public float A = 0.8f;
 
-    [Header("Affichage")]
-    public TMP_Text affichageTexte;
+    void Start() {
+        // Supprimez manuellement les Audio Listeners sur Camera_diagonale et Camera_arriere
+        btn_reset.onClick.AddListener(ResetRobot);
+        ResetRobot();
+    }
 
-    void Update()
-    {
-        // 1. Récupération des valeurs des Sliders
-        float q1 = slider1.value;
-        float q2 = slider2.value;
-        float q3 = slider3.value;
-        float q4 = slider4.value;
-        float q5 = slider5.value;
+    void Update() {
+        ApplyMovements();
+        UpdateComparison();
+    }
 
-        // 2. Application PHYSIQUE sur Unity (Mouvement des objets)
-        // Les axes correspondent à votre schéma cinématique
-        q1_Z.localPosition = new Vector3(0, 0, q1);
-        q2_X.localPosition = new Vector3(q2, 0, 0);
-        q3_Y.localPosition = new Vector3(0, q3, 0);
-        q4_RotX.localEulerAngles = new Vector3(q4, 0, 0); // Rotation q4 autour de X
-        q5_RotZ.localEulerAngles = new Vector3(0, 0, q5); // Rotation q5 autour de Z
+    public void ResetRobot() {
+        slider_q1.value = 0f; slider_q2.value = 4.5f;
+        slider_q3.value = 2f; slider_q4.value = 0f; slider_q5.value = 0f;
+    }
 
-        // 3. Calcul MGD (Matrice U0)
-        float c4 = Mathf.Cos(q4 * Mathf.Deg2Rad);
-        float s4 = Mathf.Sin(q4 * Mathf.Deg2Rad);
-        float c5 = Mathf.Cos(q5 * Mathf.Deg2Rad);
-        float s5 = Mathf.Sin(q5 * Mathf.Deg2Rad);
+    void ApplyMovements() {
+        // 1. Translations (Inversion q3 demandée)
+        origine_1.localPosition = new Vector3(0, 0, slider_q1.value);
+        origine_2.localPosition = new Vector3(slider_q2.value, 0, 0);
+        origine_3.localPosition = new Vector3(0, -slider_q3.value, 0);
 
-        // Équations de la matrice U0 
-        float Px = D1 + q3 + (D3 * c4) + (A * s4 * c5); // Correspond à Y Unity
-        float Py = q2 - (A * s5);                       // Correspond à X Unity
-        float Pz = q1 + D2 - (D3 * s4) + (A * c4 * c5); // Correspond à Z Unity
+        // 2. Rotoïdes
+        origine_4.localRotation = Quaternion.Euler(slider_q4.value, 0, 0);
+
+        // 3. O5 décalé de D2 par rapport à O4 (verticalement vers le bas dans votre schéma)
+        origine_5.localRotation = Quaternion.Euler(0, 0, slider_q5.value);
+    }
+
+    void UpdateComparison() {
+        float q1 = slider_q1.value; float q2 = slider_q2.value; 
+        float q3 = -slider_q3.value; // Utilisation de la valeur inversée pour le MGD
+        float q4 = slider_q4.value * Mathf.Deg2Rad; float q5 = slider_q5.value * Mathf.Deg2Rad;
         
-        // 4. Mapping vers les coordonnées Unity (X, Y, Z)
-        // Px=Hauteur(Y), Py=Latéral(X), Pz=Profondeur(Z)
-        Vector3 posCalculée = new Vector3(Py, Px, Pz);
+        float C4 = Mathf.Cos(q4); float S4 = Mathf.Sin(q4);
+        float C5 = Mathf.Cos(q5); float S5 = Mathf.Sin(q5);
 
-        // 5. Comparaison avec la position réelle de pointe_E
-        // transform.InverseTransformPoint donne la position mondiale relative à la Base
-        Vector3 posUnityReal = transform.InverseTransformPoint(pointe_E.position);
-        float erreur = Vector3.Distance(posUnityReal, posCalculée);
+        float Px_rapport = D1 + q3 + D3 * C4 + A * S4 * C5;
+        float Py_rapport = q2 - A * S5;
+        float Pz_rapport = q1 + D2 - D3 * S4 + A * C4 * C5;
 
-        // 6. Mise à jour de l'UI
-        if (affichageTexte != null)
-        {
-            affichageTexte.text = $"Unity (Réel) : {posUnityReal.ToString("F3")}\n" +
-                                  $"MGD (Calculé) : {posCalculée.ToString("F3")}\n" +
-                                  $"Erreur : {(erreur * 1000f).ToString("F2")} mm";
-        }
+        // MAPPING AXES UNITY : X=Py, Y=Px, Z=Pz
+        Vector3 mgdUnity = new Vector3(Py_rapport, Px_rapport, Pz_rapport);
+
+        // Position réelle dans Unity par rapport à Origine_0
+        Vector3 localPosReal = origine_0.InverseTransformPoint(pointe_E.position);
+
+        txt_comparaison.text = $"<b>Comparaison Coordonnées</b>\n" +
+                               $"Unity (Réel) : {localPosReal.x:F2}, {localPosReal.y:F2}, {localPosReal.z:F2}\n" +
+                               $"MGD (Mapped) : {mgdUnity.x:F2}, {mgdUnity.y:F2}, {mgdUnity.z:F2}\n" +
+                               $"Écart : {Vector3.Distance(localPosReal, mgdUnity):F4}";
     }
-
-    public void ResetToOrigin()
-    {
-        // 1. Arrêter le mode automatique s'il est actif
-        RobotAutoControl auto = GetComponent<RobotAutoControl>();
-        if (auto != null) {
-            auto.StopAutomation(); // Cette méthode réactive aussi le script manuel
-        }
-
-        // 2. Remettre tous les sliders à zéro
-        // Cela déclenchera automatiquement le mouvement dans l'Update() suivant
-        if(slider1) slider1.value = 0;
-        if(slider2) slider2.value = 0;
-        if(slider3) slider3.value = 0;
-        if(slider4) slider4.value = 0;
-        if(slider5) slider5.value = 0;
-        // 3. Forcer la mise à jour immédiate pour éviter un saut d'une frame
-        Canvas.ForceUpdateCanvases(); 
-        Debug.Log("Robot réinitialisé à l'état d'origine.");
-    }
-
 }
-
