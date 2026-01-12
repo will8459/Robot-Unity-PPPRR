@@ -266,6 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 27874717}
   - component: {fileID: 27874719}
+  - component: {fileID: 27874720}
   m_Layer: 0
   m_Name: Origine_0
   m_TagString: Untagged
@@ -315,6 +316,40 @@ MonoBehaviour:
   slider_q5: {fileID: 1993806883}
   btn_reset: {fileID: 833245127}
   txt_comparaison: {fileID: 1829360856}
+  D1: 3.94
+  D2: 0
+  D3: -0.77
+  A: 0.8
+--- !u!114 &27874720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27874716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b452d75f6ffe82641a23feb87f027dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotController
+  origine_0: {fileID: 27874717}
+  origine_1: {fileID: 538075455}
+  origine_2: {fileID: 867698837}
+  origine_3: {fileID: 1354040225}
+  origine_4: {fileID: 1205114718}
+  origine_5: {fileID: 1531518492}
+  pointe_E: {fileID: 1357589908}
+  sliders:
+  - {fileID: 320434721}
+  - {fileID: 1634650951}
+  - {fileID: 1706453299}
+  - {fileID: 257104122}
+  - {fileID: 1993806883}
+  btn_line: {fileID: 2080538483}
+  btn_circle: {fileID: 196525909}
+  btn_stop: {fileID: 1780883963}
+  btn_reset: {fileID: 833245127}
+  txt_coords: {fileID: 1829360856}
   D1: 3.94
   D2: 0
   D3: -0.77
@@ -3088,7 +3123,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3111,7 +3146,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 1
+  m_Time: 100
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -3121,7 +3156,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.1021022
+        value: 0.04964447
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -3735,7 +3770,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1358983724}
   m_Direction: 0
   m_MinValue: 4
-  m_MaxValue: 5.5
+  m_MaxValue: 7
   m_WholeNumbers: 0
   m_Value: 4.5
   m_OnValueChanged:
@@ -4279,8 +4314,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 1000, y: 650}
+  m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1829360856
 MonoBehaviour:
@@ -4544,8 +4579,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1919836580}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -10, y: 4, z: 0}
+  m_LocalRotation: {x: 0.0560226, y: 0.7631294, z: -0.066765144, w: 0.64034164}
+  m_LocalPosition: {x: -10, y: 4, z: 1}
   m_LocalScale: {x: 1, y: 30, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4790,7 +4825,6 @@ GameObject:
   - component: {fileID: 1996506852}
   - component: {fileID: 1996506851}
   - component: {fileID: 1996506850}
-  - component: {fileID: 1996506855}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -4892,36 +4926,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996506848}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1996506855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996506848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d5d613e9bf3fca439b33e0d8e5b124d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotManualControl
-  origine_0: {fileID: 0}
-  origine_1: {fileID: 0}
-  origine_2: {fileID: 0}
-  origine_3: {fileID: 0}
-  origine_4: {fileID: 0}
-  origine_5: {fileID: 0}
-  pointe_E: {fileID: 0}
-  slider_q1: {fileID: 0}
-  slider_q2: {fileID: 0}
-  slider_q3: {fileID: 0}
-  slider_q4: {fileID: 0}
-  slider_q5: {fileID: 0}
-  btn_reset: {fileID: 0}
-  txt_comparaison: {fileID: 0}
-  D1: 0
-  D2: 0
-  D3: 0
-  A: 0
 --- !u!1 &2009667541
 GameObject:
   m_ObjectHideFlags: 0
