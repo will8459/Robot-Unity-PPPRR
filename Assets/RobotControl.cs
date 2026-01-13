@@ -137,7 +137,7 @@ public class RobotController : MonoBehaviour
     void ApplyMovements() {
         if(origine_1) origine_1.localPosition = new Vector3(0, 0, sliders[0].value);
         
-        if(origine_2) origine_2.localPosition = new Vector3(sliders[1].value, D1, 0); 
+        if(origine_2) origine_2.localPosition = new Vector3(sliders[1].value, 0, 0); 
 
         if(origine_3) origine_3.localPosition = new Vector3(0, -sliders[2].value, 0);
 
@@ -148,10 +148,31 @@ public class RobotController : MonoBehaviour
 
     void UpdateInterface() {
         if(pointe_E && txt_coords) {
-            Vector3 pos = origine_0.InverseTransformPoint(pointe_E.position);
-            txt_coords.text = $"<b>{(isAuto ? "AUTO" : "MANUEL")}</b>\n" +
-                              $"Pos (X,Y,Z): {pos.x:F2}, {pos.y:F2}, {pos.z:F2}\n" +
-                              $"q3 (Slider): {sliders[2].value:F2}";
+            Vector3 real = origine_0.InverseTransformPoint(pointe_E.position);
+
+            float q1 = sliders[0].value;
+            float q2 = sliders[1].value;
+            float q3 = -sliders[2].value;
+            float q4 = sliders[3].value * Mathf.Deg2Rad;
+            float q5 = sliders[4].value * Mathf.Deg2Rad;
+
+            float C4 = Mathf.Cos(q4); float S4 = Mathf.Sin(q4);
+            float C5 = Mathf.Cos(q5); float S5 = Mathf.Sin(q5);
+
+            float Px_report = D1 + q3 + D3 * C4 + A * S4 * C5; 
+            float Py_report = q2 - A * S5;
+            float Pz_report = q1 + D2 - D3 * S4 + A * C4 * C5;
+
+            float Px_th = Py_report;
+            float Py_th = Px_report; 
+            float Pz_th = Pz_report; 
+
+            float ecart = Vector3.Distance(real, new Vector3(Px_th, Py_th, Pz_th));
+
+            txt_coords.text = $"<b>Mode : {(isAuto ? "AUTO" : "MANUEL")}</b>\n" +
+                          $"Unity (Réel) : {real.x:F2}, {real.y:F2}, {real.z:F2}\n" +
+                          $"MGD (Calculé) : {Px_th:F2}, {Py_th:F2}, {Pz_th:F2}\n" +
+                          $"Écart : {ecart:F4}";
         }
     }
 
